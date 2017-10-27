@@ -1,0 +1,7 @@
+kernel_X=3
+kernel_Y=3
+kernel_Z=1
+fpath=./data_files/
+fname=rbk3_z_55
+fext=vtk
+np=1
