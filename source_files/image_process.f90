@@ -61,7 +61,9 @@ IF(BUFFER(1:3) == 'np='      )read(BUFFER(4: ),*)np
 
 END DO
 
-FILE_NAME=trim(fpath)//trim(fname)//'.'//trim(fext)
+
+!FILE_NAME=trim(fpath)//trim(fname)//'.'//trim(fext)
+FILE_NAME=trim(fpath)//trim(fname)
 !FILE_NAME=trim(ADJUSTL(FILE_NAME))
 
 WRITE(*,'(/,"*",80("="),"*",/)')
@@ -70,11 +72,11 @@ WRITE(*,'(10(" "),A,A)')'* Reading File ::',trim(FILE_NAME)
 WRITE(*,'(10(" "),35("*"),/)')
 
 !==========================================================
-CALL READ_VTK_FILE(CT,CT_DATA,FILE_NAME)
+!CALL READ_VTK_FILE(CT,CT_DATA,FILE_NAME)
+CALL READ_RAW_FILE(CT,CT_DATA,FILE_NAME)
     WRITE(FILE_NAME,'(A,A,A)')'gray_value_',trim(FNAME),'.vtk'
-    CALL WRITE_VTK(CT,CT_DATA,FILE_NAME)
+!    CALL WRITE_VTK(CT,CT_DATA,FILE_NAME)
 !FILE_NAME='/home/hpcnpate/HLRS/pixel_files/torax/torax_10f/pixel'
-!CALL READ_RAW_FILE(CT,CT_DATA,FILE_NAME)
 !CALL READ_binary_file(dim1d,DATA,FILE_NAME)
 !==============================================================
 !     CALL IN_DATA_3D_Z_ZERO(CT,CT_DATA,CT_NEW,FILE_NAME)
@@ -89,12 +91,12 @@ CALL READ_VTK_FILE(CT,CT_DATA,FILE_NAME)
 !    WRITE(FILE_NAME,'(A,I0,A,A)')'adap_qr_',KSIZE(1),trim(FNAME),'.vtk'
 !    CALL WRITE_VTK(CT,CT_NEW,FILE_NAME)
 !    KSIZE=(/3,3,1/)
-CT_NEW=CT_DATA
-    CALL GRADIENT(CT_NEW,GRAD_VEC,KSIZE,np)
-    WRITE(FILE_NAME,'(A,I0,A,A)')'grad_',KSIZE(1),trim(FNAME),'.vtk'
-    CALL WRITE_VTK(CT,CT_NEW,FILE_NAME)
+!CT_NEW=CT_DATA
+!    CALL GRADIENT(CT_NEW,GRAD_VEC,KSIZE,np)
+    CALL MEAN(CT_DATA,KSIZE,np)
+    WRITE(FILE_NAME,'(A,I0,A,A)')'mean_',KSIZE(1),trim(FNAME),'.vtk'
+    CALL WRITE_VTK(CT,CT_DATA,FILE_NAME)
 !    CALL GAUSS(CT_DATA,KSIZE,np)
-!    CALL MEAN(CT_NEW,KSIZE,np)
 
 !DSIZE(1)=size(CT_DATA,1)
 !!DSIZE(2)=size(CT_DATA,2)

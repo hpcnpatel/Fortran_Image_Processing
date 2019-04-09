@@ -1,10 +1,10 @@
 !==============================================================================
-!> \file vtk_writter.f90
-!> Module for vtk output in Fortran
-!> The file holds a module with routines for vtk output
-!>
-!> \author Ralf Schneider, changed by Nisarg Patel
-!> \date 19.08.2014
+!  file vtk_writter.f90
+!  Module for vtk output in Fortran
+!  The file holds a module with routines for vtk output
+! 
+!  \author Ralf Schneider, changed by Nisarg Patel
+!  \date 19.08.2014
 
 Module vtkwritter
 
@@ -105,8 +105,7 @@ subroutine WRITE_VTK(ct,data,file_name)
  REAL(Kind=rk4)   , Dimension(3) :: spacing,origin
  INTEGER(kind=rk4), Dimension(3) :: extend
 
- open(999,file=trim(file_name),action='write',access='stream'&
-                                 &,status='replace',convert='big_endian')
+ open(999,file=trim(file_name),action='write',access='stream',convert='big_endian')
 
 spacing=(/ct%dx,ct%dy,ct%dz/)
 origin =(/ct%offset_x ,ct%offset_y ,ct%offset_z/)
@@ -114,9 +113,9 @@ extend =(/ct%pixel_x ,ct%pixel_y ,ct%slices/)
 
 call write_vtk_head_binary(999)
 call write_vtk_structured_points_head(999,extend,spacing,origin)
-write(999)int(data,2),achar(10)
+write(999)data,achar(10)
 
- Close(999)
+Close(999)
  end subroutine write_vtk
  !============================================================================
   !Subroutine which writes a head for a vtk structured_points dataset
@@ -156,8 +155,8 @@ write(un_out)trim(tmp_pointdata)
 
 !# Temp addition! 13/06/2014
 !# Scalars
-write(un_out) 'SCALARS scalars short',achar(10)
-!write(un_out) 'SCALARS scalars double',achar(10)
+!write(un_out) 'SCALARS scalars short',achar(10)
+write(un_out) 'SCALARS scalars double',achar(10)
 
 !# Lockup_table
 write(un_out) 'LOOKUP_TABLE default',achar(10)
@@ -188,8 +187,8 @@ End subroutine write_vtk_structured_points_head
 
   End subroutine write_vtk_head_ascii
 
- !============================================================================
-  !> Subroutine which writes a vtk structured_points dataset
+!============================================================================
+! !> Subroutine which writes a vtk structured_points dataset
 !subroutine write_vtk_unstructured_grid(nodes, elems, no_nodes, no_elems,filename)
 !
 !Real(Kind=ik8)    , Dimension(:,:), intent(in) :: nodes
@@ -621,8 +620,8 @@ End subroutine write_vtk_structured_points_head
 !
 !  end subroutine write_vtk_structured_points_real8_tensor
 !
-  !============================================================================
- !============================================================================
+!============================================================================
+!============================================================================
 !  !> Subroutine which writes a vtk structured_points dataset
 !  subroutine write_vtk_polydata_int4_1D (matrix, filename, desc, head)
 !
@@ -783,8 +782,8 @@ End subroutine write_vtk_structured_points_head
 !
 !  end subroutine write_vtk_polydata_grid
 !
-  !============================================================================
-  !> Function which returns new free unit
+!============================================================================
+!> Function which returns new free unit
   function give_new_unit() result(new_unit)
 
     Integer(kind=4) :: new_unit
@@ -817,7 +816,7 @@ End subroutine write_vtk_structured_points_head
 
   End function give_new_unit
 
-  !============================================================================
+!============================================================================
 !  !> Subroutine for I/O error handling while operating on files
   SUBROUTINE file_err(in_file,io_stat)
 
@@ -834,10 +833,9 @@ End subroutine write_vtk_structured_points_head
        WRITE(*,"('EE PROGRAM STOPPED ..... ',T77,' EE',/,'<',77('='),'>')")
        STOP
     End IF
-
   END SUBROUTINE file_err
 
-  !============================================================================
+!============================================================================
 !> Subroutine for opening files with big endian encoding
 !>
 Subroutine open_as_big_endian_stream(unit,file,action,status,position)

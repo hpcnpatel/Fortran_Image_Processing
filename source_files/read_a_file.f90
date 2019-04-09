@@ -46,8 +46,8 @@ IF(ios >= 1)STOP
     unit=provide_new_unit()
 
     OPEN(unit,FILE=trim(file_name),ACTION='read',STATUS='old',IOSTAT=ios)
-IF(ios >= 1)WRITE(*,*)'Error while reading file',file_name
-IF(ios >= 1)STOP
+    IF(ios >= 1)WRITE(*,*)'Error while reading file',file_name
+    IF(ios >= 1)STOP
         count=0
         DO WHILE(ios == 0)
         read(unit,'(A)',IOSTAT=ios)
@@ -63,6 +63,8 @@ IF(ios >= 1)STOP
     unit=provide_new_unit()
 
     OPEN(unit,FILE=trim(file_name),ACTION='read',STATUS='old',IOSTAT=ios)
+    IF(ios >= 1)WRITE(*,*)'Error while reading file',file_name
+    IF(ios >= 1)STOP
         DO i=1,count
             READ(unit,'(A)',IOSTAT=ios)content_arr(i)
         END DO

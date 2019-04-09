@@ -61,31 +61,9 @@ DSIZE(3)=size(ADATA,3)
 CALL SYSTEM_CLOCK(t1)
 CALL CPU_TIME(cput1)
 
-        num_threads=np
-        call omp_set_num_threads(num_threads)
-        gl_length = DSIZE(3)
-        local_length = gl_length/num_threads
+!!$OMP PARALLEL private(DTEMP,SORT_INDEX,THREAD_NUM,KK_START,KK_END,II,JJ,I,J,K,KK,CT_PT,A)
 
-!$OMP PARALLEL private(DTEMP,SORT_INDEX,THREAD_NUM,KK_START,KK_END,II,JJ,I,J,K,KK,CT_PT,A)
-
-        thread_num=omp_get_thread_num()
-        kk_start=thread_num*local_length+1
-        kk_end=kk_start+local_length-1
-
-        if(thread_num .eq. num_threads-1) kk_end=gl_length
-            write(*,'(5(A,I0))')"thread_num:",thread_num, &
-                        "; num_threads:",omp_get_num_threads(),&
-                        "; kk_start:",kk_start,&
-                        "; kk_end:", kk_end,&
-                        "; last should be:",DSIZE(3)
-!DO kk=1,DSIZE(3)
-DO KK=KK_START,KK_END
-
-        if(mod(kk,10) .eq. 0 .and. thread_num .eq. 0) then
-            write(*,'(3(A,I0))') "thread_num:",thread_num, &
-            "; kk:",kk, " from ",kk_end
-        end if
-
+DO kk=1,DSIZE(3)
 Do jj=1,DSIZE(2)
 Do ii=1,DSIZE(1)
 
@@ -110,7 +88,59 @@ END DO
 END DO
 END DO
 
-!$OMP END PARALLEL
+!!$OMP END PARALLEL
+
+! OPENMP version
+!!        num_threads=np
+!!        call omp_set_num_threads(num_threads)
+!!        gl_length = DSIZE(3)
+!!        local_length = gl_length/num_threads
+!!
+!!!$OMP PARALLEL private(DTEMP,SORT_INDEX,THREAD_NUM,KK_START,KK_END,II,JJ,I,J,K,KK,CT_PT,A)
+!!
+!!        thread_num=omp_get_thread_num()
+!!        kk_start=thread_num*local_length+1
+!!        kk_end=kk_start+local_length-1
+!!
+!!        if(thread_num .eq. num_threads-1) kk_end=gl_length
+!!            write(*,'(5(A,I0))')"thread_num:",thread_num, &
+!!                        "; num_threads:",omp_get_num_threads(),&
+!!                        "; kk_start:",kk_start,&
+!!                        "; kk_end:", kk_end,&
+!!                        "; last should be:",DSIZE(3)
+!!!DO kk=1,DSIZE(3)
+!!DO KK=KK_START,KK_END
+!!
+!!        if(mod(kk,10) .eq. 0 .and. thread_num .eq. 0) then
+!!            write(*,'(3(A,I0))') "thread_num:",thread_num, &
+!!            "; kk:",kk, " from ",kk_end
+!!        end if
+!!
+!!Do jj=1,DSIZE(2)
+!!Do ii=1,DSIZE(1)
+!!
+!!        a=0
+!!         do k=-CTR(3),CTR(3)
+!!         do j=-CTR(2),CTR(2)
+!!         do i=-CTR(1),CTR(1)
+!!!         do j=-CTR(2)+abs(k),CTR(2)-abs(k)
+!!!         do i=-CTR(1)+abs(j+k),CTR(1)-abs(j+k)
+!!            a=a+1
+!!            DTEMP(a)=DGHOST(ii+i,jj+j,kk+k)
+!!        enddo
+!!        enddo
+!!        enddo
+!!        call SORTRX_real8(DTEMP(1:a),SORT_INDEX)
+!!        CT_PT=(a+1)/2
+!!        !ADATA(ii,jj,kk)=ADATA(ii,jj,kk)+&
+!!        !&((1-(DGRAD(ii,jj,kk)/max))*(DTEMP(SORT_INDEX(CT_PT))-ADATA(ii,jj,kk)))
+!!        ADATA(ii,jj,kk)=DTEMP(SORT_INDEX(CT_PT))
+!!
+!!END DO
+!!END DO
+!!END DO
+!!
+!!!$OMP END PARALLEL
 
 call system_clock(t2)
 call CPU_TIME(cput2)
@@ -344,31 +374,7 @@ DSIZE(3)=size(ADATA,3)
 CALL SYSTEM_CLOCK(t1)
 CALL CPU_TIME(cput1)
 
-        num_threads=np
-        call omp_set_num_threads(num_threads)
-        gl_length = DSIZE(3)
-        local_length = gl_length/num_threads
-
-!$OMP PARALLEL private(DTEMP,THREAD_NUM,KK_START,KK_END,II,JJ,I,J,K,KK,A)
-
-        thread_num=omp_get_thread_num()
-        kk_start=thread_num*local_length+1
-        kk_end=kk_start+local_length-1
-
-        if(thread_num .eq. num_threads-1) kk_end=gl_length
-            write(*,'(5(A,I0))')"thread_num:",thread_num, &
-                        "; num_threads:",omp_get_num_threads(),&
-                        "; kk_start:",kk_start,&
-                        "; kk_end:", kk_end,&
-                        "; last should be:",DSIZE(3)
-!DO kk=1,DSIZE(3)
-DO KK=KK_START,KK_END
-
-        if(mod(kk,10) .eq. 0 .and. thread_num .eq. 0) then
-            write(*,'(3(A,I0))') "thread_num:",thread_num, &
-            "; kk:",kk, " from ",kk_end
-        end if
-
+DO kk=1,DSIZE(3)
 Do jj=1,DSIZE(2)
 Do ii=1,DSIZE(1)
 
@@ -376,8 +382,6 @@ Do ii=1,DSIZE(1)
         do k=-CTR(3),CTR(3)
         do j=-CTR(2),CTR(2)
         do i=-CTR(1),CTR(1)
-!         do j=-CTR(2)+abs(k),CTR(2)-abs(k)
-!         do i=-CTR(1)+abs(j+k),CTR(1)-abs(j+k)
             a=a+1
             DTEMP(a)=DGHOST(ii+i,jj+j,kk+k)
         enddo
@@ -389,7 +393,52 @@ END DO
 END DO
 END DO
 
-!$OMP END PARALLEL
+!!        num_threads=np
+!!        call omp_set_num_threads(num_threads)
+!!        gl_length = DSIZE(3)
+!!        local_length = gl_length/num_threads
+!!
+!!!$OMP PARALLEL private(DTEMP,THREAD_NUM,KK_START,KK_END,II,JJ,I,J,K,KK,A)
+!!
+!!        thread_num=omp_get_thread_num()
+!!        kk_start=thread_num*local_length+1
+!!        kk_end=kk_start+local_length-1
+!!
+!!        if(thread_num .eq. num_threads-1) kk_end=gl_length
+!!            write(*,'(5(A,I0))')"thread_num:",thread_num, &
+!!                        "; num_threads:",omp_get_num_threads(),&
+!!                        "; kk_start:",kk_start,&
+!!                        "; kk_end:", kk_end,&
+!!                        "; last should be:",DSIZE(3)
+!!!DO kk=1,DSIZE(3)
+!!DO KK=KK_START,KK_END
+!!
+!!        if(mod(kk,10) .eq. 0 .and. thread_num .eq. 0) then
+!!            write(*,'(3(A,I0))') "thread_num:",thread_num, &
+!!            "; kk:",kk, " from ",kk_end
+!!        end if
+!!
+!!Do jj=1,DSIZE(2)
+!!Do ii=1,DSIZE(1)
+!!
+!!        a=0
+!!        do k=-CTR(3),CTR(3)
+!!        do j=-CTR(2),CTR(2)
+!!        do i=-CTR(1),CTR(1)
+!!!         do j=-CTR(2)+abs(k),CTR(2)-abs(k)
+!!!         do i=-CTR(1)+abs(j+k),CTR(1)-abs(j+k)
+!!            a=a+1
+!!            DTEMP(a)=DGHOST(ii+i,jj+j,kk+k)
+!!        enddo
+!!        enddo
+!!        enddo
+!!        ADATA(ii,jj,kk)=SUM(DTEMP)/a
+!!
+!!END DO
+!!END DO
+!!END DO
+
+!!$OMP END PARALLEL
 
 call system_clock(t2)
 call CPU_TIME(cput2)

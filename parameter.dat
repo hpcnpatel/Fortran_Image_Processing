@@ -1,7 +1,7 @@
 kernel_X=3
 kernel_Y=3
-kernel_Z=1
-fpath=data_files/
-fname=rbk4_300
-fext=vtk
+kernel_Z=3
+fpath=./
+fname=pixel_rk3
+fext=
 np=1

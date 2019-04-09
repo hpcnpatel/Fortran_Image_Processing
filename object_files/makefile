@@ -6,10 +6,11 @@ obj=o
 #----------------------------------------------------------------
 #----------------------------------------------------------------
 
-COM=gfortran
-PARALLEL=-fopenmp
+COM=ifort
+PARALLEL=-qopenmp
 #OPT=-O3
-FLAGS= -Wall -fbacktrace -fbounds-check -pg -g
+#FLAGS= -Wall -fbacktrace -fbounds-check -pg -g
+FLAGS= -xHOST -O3 -g -traceback -check bounds
 
 #FLAGS is a varible which can be called from cmd line as: "makefile FLAGS=-O3"
 #f90=gfortran -fopenmp -Wall -fbacktrace -fbounds-check -std=f2003
