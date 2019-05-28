@@ -116,7 +116,7 @@ SUBROUTINE in_data_3d_Z_two(ct,ct_data,ct_interpolate,file_name)
     TYPE(tCt),INTENT(INOUT)                                   ::ct
     REAL(KIND=rk8),ALLOCATABLE,DIMENSION(:,:,:),INTENT(INOUT) ::ct_data
     REAL(KIND=rk8),ALLOCATABLE,DIMENSION(:,:,:),INTENT(OUT)   ::ct_interpolate
-    INTEGER                                                   :: kk
+    INTEGER                                                   :: kk,ii
     CHARACTER(c_len),INTENT(IN)                               ::file_name
     CHARACTER(c_len)                                          ::fname
 
@@ -145,9 +145,9 @@ write(*,*)'We increase number of slices in Z direction by a factor of 4'
             ct_interpolate(:,:,kk*4-3)=ct_data(:,:,kk)
             ct_interpolate(:,:,kk*4-1)=(ct_data(:,:,kk)+ct_data(:,:,kk+1))/2.0
             ct_interpolate(:,:,kk*4-2)=(((ct_data(:,:,kk)+ct_data(:,:,kk+1))/2.0)&
-            &+ct_data(:,:,kk))/2
+            &+ct_data(:,:,kk))/2.0
             ct_interpolate(:,:,kk*4)=(((ct_data(:,:,kk)+ct_data(:,:,kk+1))/2.0)&
-            &+ct_data(:,:,kk+1))/2
+            &+ct_data(:,:,kk+1))/2.0
         END IF
     End Do
 

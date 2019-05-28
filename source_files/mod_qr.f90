@@ -130,7 +130,8 @@ CLOSE(300)
 
 
 
-OPEN(unit=200,file='array.dat',position='append',status='old')
+!OPEN(unit=200,file='array.dat',position='append',status='old')
+OPEN(unit=200,file='array.dat',position='append')
 write(200,*)dim_nn,dim_mm
 write(200,*)real(ATEMP(1:dim_mm),4),sum(ATEMP(1:dim_mm))
 close(200)
