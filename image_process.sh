@@ -8,14 +8,14 @@
 #SBATCH -D ./
 #Notification and type
 #SBATCH --mail-type=END
-#SBATCH --mail-user=patel@lrz.de
+#SBATCH --mail-user=
 # Wall clock limit:
 #SBATCH --time=24:00:00
 #SBATCH --no-requeue
 #Setup of execution environment
 #SBATCH --export=NONE
 #SBATCH --get-user-env
-#SBATCH --account=pr28fa
+#SBATCH --account=
 #constraints are optional
 #--constraint="scratch&work"
 #SBATCH --partition=micro
