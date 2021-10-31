@@ -72,31 +72,37 @@ WRITE(*,'(10(" "),A,A)')'* Reading File ::',trim(FILE_NAME)
 WRITE(*,'(10(" "),35("*"),/)')
 
 !==========================================================
-!CALL READ_VTK_FILE(CT,CT_DATA,FILE_NAME)
-CALL READ_RAW_FILE(CT,CT_DATA,FILE_NAME)
+CALL READ_VTK_FILE(CT,CT_DATA,FILE_NAME)
+!CALL READ_RAW_FILE(CT,CT_DATA,FILE_NAME)
     WRITE(FILE_NAME,'(A,A,A)')'gray_value_',trim(FNAME),'.vtk'
 !    CALL WRITE_VTK(CT,CT_DATA,FILE_NAME)
 !FILE_NAME='/home/hpcnpate/HLRS/pixel_files/torax/torax_10f/pixel'
 !CALL READ_binary_file(dim1d,DATA,FILE_NAME)
 !==============================================================
-!     CALL IN_DATA_3D_Z_ZERO(CT,CT_DATA,CT_NEW,FILE_NAME)
+    CALL IN_DATA_3D_Z_ZERO(CT,CT_DATA,CT_NEW,FILE_NAME)
 !    CALL IN_DATA_3D_Z_one(CT,CT_DATA,CT_NEW,file_name)
-    CALL IN_DATA_3D_Z_two(CT,CT_DATA,CT_NEW,file_name)
+!    CALL IN_DATA_3D_Z_two(CT,CT_DATA,CT_NEW,file_name)
 
-!CT_NEW=CT_DATA
-    CALL MEDIAN(CT_NEW,KSIZE,np)
+CT_NEW=CT_DATA
+    CALL MEDIAN(CT_NEW,(/9,9,9/),np)
+    WRITE(FILE_NAME,'(A,A,A)')'median_9',trim(FNAME),'.vtk'
+    CALL WRITE_VTK(CT,CT_NEW,FILE_NAME)
+    WRITE(*,*)"start adp median"
+CT_NEW=CT_DATA
+    CALL ADAPTIVE_MEDIAN(CT_NEW,KSIZE,np)
     WRITE(FILE_NAME,'(A,I0,A,A)')'median_',KSIZE(1),trim(FNAME),'.vtk'
     CALL WRITE_VTK(CT,CT_NEW,FILE_NAME)
-!CT_NEW=CT_DATA
+CT_NEW=CT_DATA
+    WRITE(*,*)"start adpqr"
     CALL ADAPTIVE_QR(CT_NEW,KSIZE,np)
     WRITE(FILE_NAME,'(A,I0,A,A)')'adap_qr_',KSIZE(1),trim(FNAME),'.vtk'
     CALL WRITE_VTK(CT,CT_NEW,FILE_NAME)
 !    KSIZE=(/3,3,1/)
 !CT_NEW=CT_DATA
     !CALL GRADIENT(CT_NEW,GRAD_VEC,KSIZE,np)
-    CALL MEAN(CT_DATA,KSIZE,np)
-    WRITE(FILE_NAME,'(A,I0,A,A)')'mean_',KSIZE(1),trim(FNAME),'.vtk'
-    CALL WRITE_VTK(CT,CT_DATA,FILE_NAME)
+!!!    CALL MEAN(CT_DATA,KSIZE,np)
+!!!    WRITE(FILE_NAME,'(A,I0,A,A)')'mean_',KSIZE(1),trim(FNAME),'.vtk'
+!!!    CALL WRITE_VTK(CT,CT_DATA,FILE_NAME)
 !DSIZE(1)=size(CT_DATA,1)
 !!DSIZE(2)=size(CT_DATA,2)
 !DSIZE(3)=size(CT_DATA,3)

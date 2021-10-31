@@ -214,9 +214,9 @@ WRITE(*,'(3(A,I0))')'==> Kernel size for gradient :: ',GRAD_KSIZE(1),'x',GRAD_KS
         min=minval(DGRAD)
         max=maxval(DGRAD)
 
-        CV1=100.0
-        CV2=50.0
-        CV3=10.0
+        CV1=10000.0
+        CV2=5000.0
+        CV3=1000.0
         !CV1=50.0
         !CV2=25.0
         !CV3=10.0
@@ -234,7 +234,7 @@ WRITE(*,'(3(A,I0))')'==> Kernel size for gradient :: ',GRAD_KSIZE(1),'x',GRAD_KS
     ALLOCATE(DTEMP(KSHAPE))
     IF(ALLOCATED(SORT_INDEX))DEALLOCATE(SORT_INDEX)
     ALLOCATE(SORT_INDEX(KSHAPE))
-
+    write(*,*)'done'
 DO ll=1,4
 IF(ll == 1)GV=max
 IF(ll == 2)GV=CV1
@@ -248,13 +248,13 @@ CALL CPU_TIME(cput1)
         gl_length = DSIZE(3)
         local_length = gl_length/num_threads
 
-!$OMP PARALLEL private(TOT,DTEMP,SORT_INDEX,THREAD_NUM,KK_START,KK_END,II,JJ,I,J,K,KK,CT_PT,A)
+!!$OMP PARALLEL private(TOT,DTEMP,SORT_INDEX,THREAD_NUM,KK_START,KK_END,II,JJ,I,J,K,KK,CT_PT,A)
 
-        thread_num=omp_get_thread_num()
-        kk_start=thread_num*local_length+1
-        kk_end=kk_start+local_length-1
+!        thread_num=omp_get_thread_num()
+!        kk_start=thread_num*local_length+1
+!        kk_end=kk_start+local_length-1
 
-        if(thread_num .eq. num_threads-1) kk_end=gl_length
+!!        if(thread_num .eq. num_threads-1) kk_end=gl_length
 !            write(*,'(5(A,I0))')"thread_num:",thread_num, &
 !                        "; num_threads:",omp_get_num_threads(),&
 !                        "; kk_start:",kk_start,&
@@ -262,7 +262,8 @@ CALL CPU_TIME(cput1)
 !                        "; last should be:",DSIZE(3)
 
 TOT=0
-DO KK=KK_START,KK_END
+!DO KK=KK_START,KK_END
+DO KK=1,DSIZE(3)
 
 !       if(mod(kk,10) .eq. 0 .and. thread_num .eq. 0) then
 !           write(*,'(3(A,I0))') "thread_num:",thread_num, &
@@ -304,7 +305,7 @@ write(*,'(A,F7.3,A,I0,A,I0,A,F6.2)')'==> &
                 &number of pixels less then ',GV,' out of ',SIZE(ADATA),' :: ',TOT,'&
                 &. In percentage :: ',TOT*100.0/SIZE(ADATA)
 
-!$OMP END PARALLEL
+!!$OMP END PARALLEL
 
 DO kk=1,DSIZE(3)
 DO jj=1,DSIZE(2)
