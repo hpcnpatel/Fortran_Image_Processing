@@ -1,7 +1,7 @@
-kernel_X=9
-kernel_Y=9
-kernel_Z=9
-fpath=./
-fname=pixel_rk3
-fext=
-np=48
+kernel_X=5
+kernel_Y=5
+kernel_Z=5
+fpath=./vtk/
+fname=file_name_of_CT_data
+fext=vtk
+np=24

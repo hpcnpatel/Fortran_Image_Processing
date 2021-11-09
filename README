@@ -1,0 +1,52 @@
+#============================================================================#
+This is a collection of programs for processing, manupulating and filtering a CT
+scan data. A CT scan data could be a binary RAW data or VTK data. All the source
+code is placed in the ./source_files directory. 
+
+Important files to be looked at while building & executing the program are,
+--> ./parameter.dat
+--> ./source_files/image_process.f90
+
+#============================================================================#
+How to Build
+
+>> make -C object_files 
+#============================================================================#
+How to Execute
+
+>> ./inter parameter.dat
+
+Within the parameter.dat file, the name of the file (CT data) must be specified
+along with the size of the filter to be considered. Here are the values that
+can be passed to binary executable via parameter.dat file. 
+
+The parameter.dat will look like this, 
+
+  1 kernel_X=5
+  2 kernel_Y=5
+  3 kernel_Z=5
+  4 fpath=./vtk/
+  5 fname=file_name_of_CT_data
+  6 fext=vtk
+  7 np=24
+
+kernel_X,_Y,&_Z can be used to pass the length/size of the filter in each x,y,
+& z direction.
+
+fpath=> file path name
+fname=> file name without extention
+fext=> file extension (for example, vtk or raw) 
+
+#============================================================================#
+
+Main available filters are, 
+
+=> ADAPTIVE_MEDIAN
+=> ADAPTIVE_QR
+=> GRADIENT
+=> MEAN
+=> MEDIAN
+=> QR
+=> data Extrapolation filter
+
+#============================================================================#

@@ -214,12 +214,9 @@ WRITE(*,'(3(A,I0))')'==> Kernel size for gradient :: ',GRAD_KSIZE(1),'x',GRAD_KS
         min=minval(DGRAD)
         max=maxval(DGRAD)
 
-        CV1=10000.0
-        CV2=5000.0
-        CV3=1000.0
-        !CV1=50.0
-        !CV2=25.0
-        !CV3=10.0
+        CV1=50.0
+        CV2=25.0
+        CV3=10.0
 
         write(*,*)'min of gradient ::',min
         write(*,*)'CV3             ::',CV3
