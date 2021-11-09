@@ -39,7 +39,7 @@ fext=> file extension (for example, vtk or raw)
 
 #============================================================================#
 
-Main available filters are, 
+Main available filters or manipulation tools (in form of subroutines) are, 
 
 => ADAPTIVE_MEDIAN
 => ADAPTIVE_QR
@@ -47,6 +47,54 @@ Main available filters are,
 => MEAN
 => MEDIAN
 => QR
-=> data Extrapolation filter
-
+=> data Extrapolation filter subroutine
+=> VTK data read & write subroutine
+=> RAW data read subroutine
+=> sorting subroutines
 #============================================================================#
+
+How to use the Adaptive filters (QR or median) on a CT data to extract best
+possible smoothed filtered results? Please remember, the aim is to extract a
+smooth geometry of the human artery from the patient specific CT scan data. 
+
+In the source_files/image_process.f90 file, one must call a subroutine called,
+adaptive_median or adaptive_qr subroutine, like below
+
+CALL ADAPTIVE_MEDIAN(CT_NEW,KSIZE,np)
+or
+CALL ADAPTIVE_QR(CT_NEW,KSIZE,np)
+
+Adaptive filters will find the gradient of each pixel and based on the intensity
+of the gradient value, the median or qr filters will be applied mulpiple times. 
+
+The intensity value are predefined, 0,25,50 and Max of Gradient. 
+
+A maximum of 4 times a median or qr filter will be appied on a pixel based on
+the norm of the gradient.
+
+Keep in mind the size of the kernel/filter being used. In the parameter file one
+must specify this. The common values are 3,3,3 or 5,5,5.
+#============================================================================#
+
+How to use the pure QR or median filter on a CT data to extract best
+possible smoothed filtered results? Please remember, the aim is to extract a
+smooth geometry of the human artery from the patient specific CT scan data. 
+
+In the source_files/image_process.f90 file, one must call a subroutine called,
+median or qr subroutine, like below
+
+CALL MEDIAN(CT_NEW,KSIZE,np)
+or
+CALL QR(CT_NEW,KSIZE,np)
+
+If you want to process the median /qr filter on each pixel for more number of
+times, you can do this, 
+
+
+CALL MEDIAN(CT_NEW,KSIZE,np)
+CALL MEDIAN(CT_NEW,KSIZE,np)
+CALL MEDIAN(CT_NEW,KSIZE,np)
+CALL MEDIAN(CT_NEW,KSIZE,np)
+
+In the above example, 4 times a median filter will be appied on each pixel/voxel
+without taking gradient into considerations. 
